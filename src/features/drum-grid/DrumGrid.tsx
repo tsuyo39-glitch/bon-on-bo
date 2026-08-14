@@ -11,7 +11,7 @@ const ROW_H = 36;
 const HEADER_H = 24;
 const GRID_WIDTH = TOTAL_STEPS * CELL_W;
 
-/** 表示順（上から）: Crash / HH Open / HH Close / Cowbell / Tom / Clap / Snare / Kick */
+/** 表示順（上から）: 妙鉢 / 引磬 / 鈴 / 錫杖 / 太鼓 / 拍子木 / 木魚高 / 木魚低 */
 const LANES = [6, 3, 2, 7, 4, 5, 1, 0] as const;
 
 /** 小節境界は濃く、拍は中間、その他は薄い罫線（SPECIFICATION.md §5.2） */

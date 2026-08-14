@@ -11,13 +11,13 @@ export default defineConfig({
       registerType: 'prompt', // 更新は自動リロードせずトーストで確認（§7）
       includeAssets: ['favicon.svg', 'fonts/**/*.woff2'],
       manifest: {
-        name: 'chiptune-studio',
-        short_name: 'chiptune',
-        description: '8bit チップチューン音楽制作アプリ',
+        name: '梵音房 — 仏教音楽制作所',
+        short_name: '梵音房',
+        description: '声明・梵鐘・木魚で祈りのリズムを編む仏教音楽制作アプリ',
         lang: 'ja',
         display: 'standalone',
         background_color: '#f2e8d3',
-        theme_color: '#f2e8d3',
+        theme_color: '#8f2f23',
         icons: [
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },

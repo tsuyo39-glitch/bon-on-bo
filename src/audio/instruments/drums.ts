@@ -2,14 +2,14 @@ import { getNoiseBuffer } from '../consoles';
 import type { InstrumentPlayer } from './types';
 
 export const DRUM_LANE_NAMES = [
-  'Kick',
-  'Snare',
-  'HH Close',
-  'HH Open',
-  'Tom',
-  'Clap',
-  'Crash',
-  'Cowbell',
+  '木魚・低',
+  '木魚・高',
+  '鈴（りん）',
+  '引磬',
+  '太鼓',
+  '拍子木',
+  '妙鉢',
+  '錫杖',
 ] as const;
 
 function playNoise(
@@ -64,29 +64,6 @@ function playPitchDrop(
   osc.stop(time + decay + 0.03);
 }
 
-function playKick(ctx: BaseAudioContext, destination: AudioNode, time: number, velocity: number): void {
-  playPitchDrop(ctx, destination, time, velocity, 160, 45, 0.12, 0.22);
-  // 低域ノイズ短発でアタックを足す
-  playNoise(ctx, destination, time, velocity * 0.4, 0.05, 'lowpass', 300);
-}
-
-function playSnare(ctx: BaseAudioContext, destination: AudioNode, time: number, velocity: number): void {
-  // 中域ノイズ
-  playNoise(ctx, destination, time, velocity * 0.7, 0.16, 'bandpass', 1800);
-
-  // 短い矩形波で胴鳴りを足す
-  const osc = ctx.createOscillator();
-  osc.type = 'square';
-  osc.frequency.value = 180;
-  const gain = ctx.createGain();
-  gain.gain.setValueAtTime(velocity * 0.25, time);
-  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
-  gain.gain.setValueAtTime(0, time + 0.08);
-  osc.connect(gain).connect(destination);
-  osc.start(time);
-  osc.stop(time + 0.1);
-}
-
 /** 短いノイズを 3 連発させる手拍子 */
 function playClap(ctx: BaseAudioContext, destination: AudioNode, time: number, velocity: number): void {
   playNoise(ctx, destination, time, velocity * 0.9, 0.02, 'bandpass', 1200);
@@ -117,33 +94,73 @@ function playCowbell(ctx: BaseAudioContext, destination: AudioNode, time: number
   }
 }
 
+/** 木魚: 短い中空の胴鳴り。2音のサイン波を急減衰させる。 */
+function playMokugyo(ctx: BaseAudioContext, destination: AudioNode, time: number, velocity: number, high = false): void {
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(velocity * 0.75, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.13);
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = high ? 720 : 430;
+  filter.Q.value = 3.5;
+  filter.connect(gain).connect(destination);
+  for (const ratio of [1, 1.47]) {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime((high ? 620 : 370) * ratio, time);
+    osc.frequency.exponentialRampToValueAtTime((high ? 540 : 320) * ratio, time + 0.035);
+    osc.connect(filter);
+    osc.start(time);
+    osc.stop(time + 0.16);
+  }
+  playNoise(ctx, destination, time, velocity * 0.12, 0.018, 'bandpass', 1100);
+}
+
+/** 鈴・鉢: 複数の非整数倍音を長く残す。 */
+function playTempleBell(ctx: BaseAudioContext, destination: AudioNode, time: number, velocity: number, large = false): void {
+  const frequencies = large ? [260, 421, 603, 887] : [920, 1513, 2180, 3110];
+  frequencies.forEach((frequency, index) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = frequency;
+    const decay = (large ? 1.6 : 0.85) - index * 0.12;
+    gain.gain.setValueAtTime((velocity * (large ? 0.22 : 0.13)) / (index + 1), time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + decay);
+    osc.connect(gain).connect(destination);
+    osc.start(time);
+    osc.stop(time + decay + 0.04);
+  });
+}
+
 // レーン: 0=Kick / 1=Snare / 2=HH Close / 3=HH Open / 4=Tom / 5=Clap / 6=Crash / 7=Cowbell
 // （SPECIFICATION.md §4.2）
 export const playDrums: InstrumentPlayer = (ctx, destination, { time, pitch, velocity }) => {
   switch (pitch) {
     case 0:
-      playKick(ctx, destination, time, velocity);
+      playMokugyo(ctx, destination, time, velocity);
       break;
     case 1:
-      playSnare(ctx, destination, time, velocity);
+      playMokugyo(ctx, destination, time, velocity, true);
       break;
     case 2:
-      playNoise(ctx, destination, time, velocity * 0.5, 0.04, 'highpass', 7000);
+      playTempleBell(ctx, destination, time, velocity);
       break;
     case 3:
-      playNoise(ctx, destination, time, velocity * 0.5, 0.3, 'highpass', 7000);
+      playTempleBell(ctx, destination, time, velocity, true);
       break;
     case 4:
-      playPitchDrop(ctx, destination, time, velocity * 0.8, 240, 110, 0.15, 0.3);
+      playPitchDrop(ctx, destination, time, velocity * 0.7, 130, 62, 0.12, 0.42);
       break;
     case 5:
-      playClap(ctx, destination, time, velocity);
+      playClap(ctx, destination, time, velocity * 0.75);
       break;
     case 6:
-      playNoise(ctx, destination, time, velocity * 0.5, 0.9, 'highpass', 5000);
+      playTempleBell(ctx, destination, time, velocity * 0.85, true);
+      playNoise(ctx, destination, time, velocity * 0.12, 0.6, 'highpass', 4200);
       break;
     case 7:
-      playCowbell(ctx, destination, time, velocity);
+      playCowbell(ctx, destination, time, velocity * 0.65);
       break;
   }
 };

@@ -59,11 +59,8 @@ export function makeBitcrushCurve(levels: number, samples = 1024): Float32Array<
 }
 
 /**
- * コンソールモードの質感を与えるノードを destination の手前に挿入し、
- * 楽器の接続先となる入口ノードを返す（SPECIFICATION.md §3.3）。
- * - famicom: 素通し
- * - gameboy: 4bit 量子化（ビットクラッシュ）
- * - superfamicom: ローパスで柔らかく、擬似的に 32kHz サンプル感を出す
+ * 伽藍の空気感を与える穏やかな音色補正。
+ * 旧チップチューン版のビットクラッシュは使わず、人声の連続性を保つ。
  */
 export function createConsoleChain(
   ctx: BaseAudioContext,
@@ -74,16 +71,18 @@ export function createConsoleChain(
     case 'famicom':
       return destination;
     case 'gameboy': {
-      const crusher = ctx.createWaveShaper();
-      crusher.curve = makeBitcrushCurve(16);
-      crusher.connect(destination);
-      return crusher;
+      const warmth = ctx.createBiquadFilter();
+      warmth.type = 'lowshelf';
+      warmth.frequency.value = 420;
+      warmth.gain.value = 2.5;
+      warmth.connect(destination);
+      return warmth;
     }
     case 'superfamicom': {
       const lowpass = ctx.createBiquadFilter();
       lowpass.type = 'lowpass';
-      lowpass.frequency.value = 7000;
-      lowpass.Q.value = 0.5;
+      lowpass.frequency.value = 10500;
+      lowpass.Q.value = 0.35;
       lowpass.connect(destination);
       return lowpass;
     }

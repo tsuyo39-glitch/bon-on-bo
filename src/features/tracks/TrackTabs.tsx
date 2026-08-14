@@ -3,10 +3,10 @@ import type { TrackId } from '../../model/project';
 import { useProjectStore } from '../../store/projectStore';
 
 const TRACK_LABELS: Record<TrackId, string> = {
-  piano: 'ピアノ',
-  guitar: 'ギター',
-  bass: 'ベース',
-  drums: 'ドラム',
+  piano: '声明（しょうみょう）',
+  guitar: '梵鐘',
+  bass: '地鳴り',
+  drums: '法具',
 };
 
 interface TrackTabsProps {

@@ -27,6 +27,47 @@ function App() {
   const [activeTrack, setActiveTrack] = useState<TrackId>('drums');
   const { toggle: togglePlayback } = useTransport();
 
+  const loadChantPattern = () => {
+    const current = useProjectStore.getState().project;
+    const hasNotes = current.tracks.some((track) => track.notes.length > 0);
+    if (hasNotes && !window.confirm('現在の譜面を「般若の型」に置き換えますか？')) return;
+    useProjectStore.getState().loadProject({
+      ...current,
+      title: '般若の型',
+      bpm: 72,
+      tracks: current.tracks.map((track) => ({
+        ...track,
+        notes:
+          track.id === 'piano'
+            ? [
+                { step: 0, pitch: 48, length: 8, velocity: 0.72 },
+                { step: 8, pitch: 50, length: 4, velocity: 0.65 },
+                { step: 12, pitch: 48, length: 12, velocity: 0.76 },
+                { step: 24, pitch: 43, length: 8, velocity: 0.68 },
+                { step: 32, pitch: 48, length: 16, velocity: 0.78 },
+                { step: 48, pitch: 50, length: 8, velocity: 0.66 },
+                { step: 56, pitch: 48, length: 8, velocity: 0.72 },
+              ]
+            : track.id === 'guitar'
+              ? [
+                  { step: 0, pitch: 43, length: 8, velocity: 0.58 },
+                  { step: 64, pitch: 41, length: 8, velocity: 0.54 },
+                ]
+              : track.id === 'bass'
+                ? [
+                    { step: 0, pitch: 36, length: 32, velocity: 0.5 },
+                    { step: 32, pitch: 34, length: 32, velocity: 0.46 },
+                  ]
+                : Array.from({ length: 32 }, (_, i) => ({
+                    step: i * 2,
+                    pitch: i % 8 === 7 ? 2 : i % 4 === 3 ? 1 : 0,
+                    length: 1,
+                    velocity: i % 4 === 0 ? 0.88 : 0.62,
+                  })),
+      })),
+    });
+  };
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || isEditingText(event.target)) {
@@ -62,9 +103,15 @@ function App() {
   }, [project.consoleMode]);
 
   return (
-    <div className="min-h-dvh">
-      <header className="flex flex-wrap items-center gap-4 border-b-2 border-ink px-4 py-3">
-        <h1 className="text-2xl tracking-widest">CHIPTUNE STUDIO</h1>
+    <div className="sacred-app min-h-dvh">
+      <div className="ambient-light ambient-light-left" aria-hidden="true" />
+      <div className="ambient-light ambient-light-right" aria-hidden="true" />
+      <header className="temple-header flex flex-wrap items-center gap-4 border-b-2 border-ink px-4 py-3">
+        <div className="bonji-seal" aria-hidden="true"><span>अ</span></div>
+        <div>
+          <h1 className="text-2xl tracking-[0.28em]">梵音房</h1>
+          <p className="text-xs tracking-[0.18em] text-shade">BON-ON-BO · 聖音を結ぶ場所</p>
+        </div>
         <input
           type="text"
           value={project.title}
@@ -75,6 +122,9 @@ function App() {
         <div className="ml-auto flex items-center gap-6">
           <ConsoleModeSwitch />
           <div className="flex gap-2">
+            <button type="button" onClick={loadChantPattern} className="preset-button border-2 border-ink bg-gold px-3 py-2 shadow-(--shadow-pixel)">
+              般若の響き
+            </button>
             <ProjectFileButtons />
             <WavExportButton />
           </div>
@@ -83,8 +133,21 @@ function App() {
 
       <Transport onToggle={togglePlayback} />
 
-      <main className="space-y-4 p-4">
-        <TrackTabs activeTrack={activeTrack} onSelect={setActiveTrack} />
+      <main className="sacred-main space-y-5 p-4">
+        <section className="mandala-panel border-2 border-ink bg-tone px-4 py-3" aria-label="アプリの説明">
+          <div className="mandala-orbit" aria-hidden="true">
+            <span className="mandala-core">ॐ</span>
+          </div>
+          <div className="hero-copy">
+            <p className="hero-kicker">SACRED SOUND COMPOSER</p>
+            <h2>音を置き、祈りを編む</h2>
+            <p>声明・梵鐘・地鳴り・法具を重ね、八小節の聖なる響きを結びます</p>
+          </div>
+        </section>
+        <section className="instrument-sanctuary">
+          <p className="section-caption">四つの響き</p>
+          <TrackTabs activeTrack={activeTrack} onSelect={setActiveTrack} />
+        </section>
 
         <div className="flex flex-wrap gap-x-4 gap-y-1 border-y-2 border-ink bg-tone px-3 py-2 text-xs text-shade" aria-label="キーボードショートカット">
           <span><kbd className="font-num text-[9px] text-ink">SPACE</kbd> 再生/停止</span>
@@ -93,11 +156,14 @@ function App() {
           <span><kbd className="font-num text-[9px] text-ink">S</kbd> ソロ</span>
         </div>
 
-        {activeTrack === 'drums' ? (
-          <DrumGrid />
-        ) : (
-          <PianoRoll trackId={activeTrack as PitchedTrackId} />
-        )}
+        <section className="score-sanctuary">
+          <p className="section-caption">音曼荼羅</p>
+          {activeTrack === 'drums' ? (
+            <DrumGrid />
+          ) : (
+            <PianoRoll trackId={activeTrack as PitchedTrackId} />
+          )}
+        </section>
       </main>
 
       <UpdateToast />
