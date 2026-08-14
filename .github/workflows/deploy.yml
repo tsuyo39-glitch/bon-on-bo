@@ -26,7 +26,7 @@ jobs:
           cache: npm
       - run: npm ci
       # base はここだけで指定する（vite.config.ts は変更しない）
-      - run: npm run build -- --base=/chiptune-studio/
+      - run: npm run build -- --base=/bon-on-bo/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
