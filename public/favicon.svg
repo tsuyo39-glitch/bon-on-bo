@@ -1,58 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" shape-rendering="crispEdges">
-  <!-- ドット絵ロゴ: CHIP / TUNE 2段（ファミコンカラー） -->
-  <rect width="26" height="26" fill="#f2e8d3"/>
-  <rect x="5" y="7" width="3" height="1" fill="#a8433b"/>
-  <rect x="9" y="7" width="1" height="1" fill="#a8433b"/>
-  <rect x="12" y="7" width="1" height="1" fill="#a8433b"/>
-  <rect x="14" y="7" width="4" height="1" fill="#a8433b"/>
-  <rect x="19" y="7" width="3" height="1" fill="#a8433b"/>
-  <rect x="4" y="8" width="1" height="1" fill="#a8433b"/>
-  <rect x="9" y="8" width="1" height="1" fill="#a8433b"/>
-  <rect x="12" y="8" width="1" height="1" fill="#a8433b"/>
-  <rect x="15" y="8" width="2" height="1" fill="#a8433b"/>
-  <rect x="19" y="8" width="1" height="1" fill="#a8433b"/>
-  <rect x="22" y="8" width="1" height="1" fill="#a8433b"/>
-  <rect x="4" y="9" width="1" height="1" fill="#a8433b"/>
-  <rect x="9" y="9" width="4" height="1" fill="#a8433b"/>
-  <rect x="15" y="9" width="2" height="1" fill="#a8433b"/>
-  <rect x="19" y="9" width="3" height="1" fill="#a8433b"/>
-  <rect x="4" y="10" width="1" height="1" fill="#a8433b"/>
-  <rect x="9" y="10" width="1" height="1" fill="#a8433b"/>
-  <rect x="12" y="10" width="1" height="1" fill="#a8433b"/>
-  <rect x="15" y="10" width="2" height="1" fill="#a8433b"/>
-  <rect x="19" y="10" width="1" height="1" fill="#a8433b"/>
-  <rect x="5" y="11" width="3" height="1" fill="#a8433b"/>
-  <rect x="9" y="11" width="1" height="1" fill="#a8433b"/>
-  <rect x="12" y="11" width="1" height="1" fill="#a8433b"/>
-  <rect x="14" y="11" width="4" height="1" fill="#a8433b"/>
-  <rect x="19" y="11" width="1" height="1" fill="#a8433b"/>
-  <rect x="4" y="15" width="4" height="1" fill="#26211f"/>
-  <rect x="9" y="15" width="1" height="1" fill="#26211f"/>
-  <rect x="12" y="15" width="1" height="1" fill="#26211f"/>
-  <rect x="14" y="15" width="1" height="1" fill="#26211f"/>
-  <rect x="17" y="15" width="1" height="1" fill="#26211f"/>
-  <rect x="19" y="15" width="4" height="1" fill="#26211f"/>
-  <rect x="5" y="16" width="2" height="1" fill="#26211f"/>
-  <rect x="9" y="16" width="1" height="1" fill="#26211f"/>
-  <rect x="12" y="16" width="1" height="1" fill="#26211f"/>
-  <rect x="14" y="16" width="2" height="1" fill="#26211f"/>
-  <rect x="17" y="16" width="1" height="1" fill="#26211f"/>
-  <rect x="19" y="16" width="1" height="1" fill="#26211f"/>
-  <rect x="5" y="17" width="2" height="1" fill="#26211f"/>
-  <rect x="9" y="17" width="1" height="1" fill="#26211f"/>
-  <rect x="12" y="17" width="1" height="1" fill="#26211f"/>
-  <rect x="14" y="17" width="1" height="1" fill="#26211f"/>
-  <rect x="16" y="17" width="2" height="1" fill="#26211f"/>
-  <rect x="19" y="17" width="3" height="1" fill="#26211f"/>
-  <rect x="5" y="18" width="2" height="1" fill="#26211f"/>
-  <rect x="9" y="18" width="1" height="1" fill="#26211f"/>
-  <rect x="12" y="18" width="1" height="1" fill="#26211f"/>
-  <rect x="14" y="18" width="1" height="1" fill="#26211f"/>
-  <rect x="17" y="18" width="1" height="1" fill="#26211f"/>
-  <rect x="19" y="18" width="1" height="1" fill="#26211f"/>
-  <rect x="5" y="19" width="2" height="1" fill="#26211f"/>
-  <rect x="10" y="19" width="2" height="1" fill="#26211f"/>
-  <rect x="14" y="19" width="1" height="1" fill="#26211f"/>
-  <rect x="17" y="19" width="1" height="1" fill="#26211f"/>
-  <rect x="19" y="19" width="4" height="1" fill="#26211f"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#4b3b68"/>
+      <stop offset="1" stop-color="#151124"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#151124"/>
+  <circle cx="32" cy="32" r="24" fill="url(#halo)" stroke="#d8b45c" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="19" fill="none" stroke="#d8b45c" stroke-opacity=".38"/>
+  <path d="M32 12v40M12 32h40M18 18l28 28M46 18 18 46" stroke="#d8b45c" stroke-opacity=".18"/>
+  <text x="32" y="42" text-anchor="middle" font-family="serif" font-size="30" fill="#f2d98e">अ</text>
 </svg>

@@ -1,28 +1,25 @@
-# chiptune-studio（仮称）
+# 梵音房（BON-ON-BO）
 
-8bit 音楽制作 Web アプリ。仕様は [SPECIFICATION.md](SPECIFICATION.md) を厳守すること（スコープ・非目標を含む）。
+声明・梵鐘・木魚などの響きを制作する仏教音楽Webアプリ。仕様は [SPECIFICATION.md](SPECIFICATION.md) を参照すること。
 
 ## コマンド
 
-- `npm run dev` — 開発サーバ
-- `npm run typecheck` — 型チェック（tsc -b）
+- `npm run dev` — 開発サーバー
+- `npm run typecheck` — 型チェック
 - `npm run lint` — oxlint
+- `npm test` — Vitest
 - `npm run build` — 本番ビルド
 
-## アーキテクチャの要点
+## アーキテクチャ
 
-- `src/audio/` と `src/model/` は React / Zustand に依存しない純粋 TS
-- 依存方向は UI → store → model / audio の一方向のみ
-- サウンドは Web Audio API 素の API のみ（Tone.js 等は使わない）
-- 再生とエクスポートは同じエンジンコード（AudioContext を引数で受け取る）
+- `src/audio/` と `src/model/` はReact / Zustandに依存しない純粋TypeScript
+- 依存方向はUI → store → model / audio
+- 音響はWeb Audio APIを直接使用する
+- リアルタイム再生とWAV書き出しは同じ音響エンジンを使用する
+- 8bit化やビットクラッシュ処理は追加しない
 
-## 開発の進め方
+## デザイン
 
-- 1 セッション = 1 スライス = 1 ブランチ（SPECIFICATION.md §9 の実装順）
-- 完了条件: typecheck / lint / build 通過 + 実ブラウザでの動作確認（音は耳で確認）
-
-## スタイル
-
-- ドット調テーマの変数は `src/styles/theme.css` に集約（ファミコン風クリーム/レッド/ブラック + コンソール別アクセント）
-- 角丸・グラデーション・ぼかし禁止。影は 4px オフセットのベタ塗り
-- フォントはセルフホスト（`public/fonts/`、DotGothic16 / Press Start 2P）
+- 夜の伽藍、光背、曼荼羅をモチーフにする
+- 濃紺・漆黒・金泥を基本色とする
+- ドット絵、ピクセルフォント、ゲーム機風UIは使用しない

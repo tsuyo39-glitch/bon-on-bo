@@ -1,51 +1,61 @@
-# chiptune-studio
+# 梵音房（BON-ON-BO）
 
-ブラウザで動く 8bit（チップチューン）音楽制作アプリ。ファミコン風の音を Web Audio API で再現し、8 小節のループをステップシーケンサーで打ち込んで WAV として書き出せます。
+ブラウザで声明・梵鐘・木魚などの響きを組み立てる、仏教音楽制作Webアプリです。
+
+8bit／チップチューン音源ではありません。Web Audio APIによって、人声の母音共鳴、呼気、自然な揺れ、鐘の非整数倍音、木魚の胴鳴りなどを合成しています。
+
+## 音源
+
+- **声明（しょうみょう）** — 男声の声帯波、母音フォルマント、呼気、ビブラートを重ねた持続音
+- **梵鐘** — 複数の非整数倍音による金属的で長い余韻
+- **地鳴り** — 寺院の床下から響くような低い持続音
+- **法具** — 木魚（低・高）、鈴、引磬、太鼓、拍子木、妙鉢、錫杖
+
+「般若の響き」プリセットから、声明・梵鐘・木魚を組み合わせたサンプルをすぐに再生できます。
 
 ## 機能
 
-- **4 トラック構成** — ピアノ（矩形波 50%）/ ギター（矩形波 25% + ビブラート）/ ベース（三角波）/ ドラム
-- **ドラム 8 レーン** — Kick / Snare / HH Close / HH Open / Tom / Clap / Crash / Cowbell
-- **ピアノロール** — クリックで追加、ドラッグで移動・長さ変更、クリックで削除。追加時にプレビュー発音
-- **ドラムグリッド** — クリックでトグル、ドラッグで連続入力
-- **トランスポート** — 再生/停止（スペースキー）・BPM 40–240・メトロノーム・プレイヘッド自動追従
-- **ミキシング** — トラックごとの音量・ミュート・ソロ
-- **自動保存** — 変更のたびに localStorage へ保存し、次回起動時に復元
-- **ファイル入出力** — プロジェクトを `.json` で保存/読込、`.wav`（44.1kHz / 16bit / ステレオ）で書き出し
+- 4トラック、8小節のシーケンサー
+- ピアノロールによる声明・梵鐘・地鳴りの編集
+- 8レーンの法具グリッド
+- 再生、BPM変更、メトロノーム、音量、ミュート、ソロ
+- ブラウザへの自動保存
+- プロジェクトのJSON保存・読込
+- 44.1kHz／16bit／ステレオWAV書き出し
+- PWAとしてインストール・オフライン利用
+
+## デザイン
+
+夜の伽藍、光背、曼荼羅をモチーフに、濃紺・漆黒・金泥で構成しています。ドット絵やゲーム機風のUIは使用していません。
 
 ## 技術スタック
 
-- React 18 + TypeScript (strict) + Vite
-- Tailwind CSS v4（ファミコン風カラーのドット調テーマ）
-- Zustand（状態管理）
-- Web Audio API 素の API のみ（Tone.js 等のラッパー不使用）。再生とエクスポートは同一のエンジンコードを `AudioContext` / `OfflineAudioContext` で共用
+- React 18 + TypeScript + Vite
+- Tailwind CSS v4
+- Zustand
+- Web Audio API / OfflineAudioContext
+- Vitest / oxlint
 
-詳細な仕様は [SPECIFICATION.md](SPECIFICATION.md) を参照してください。
+音源は外部ライブラリや録音サンプルに依存せず、ブラウザ標準のWeb Audio APIで合成しています。リアルタイム再生とWAV書き出しは同じ音響エンジンを使用します。
 
 ## 開発
 
 ```sh
 npm install
-npm run dev        # 開発サーバ (http://localhost:5173)
-npm run test       # ユニットテスト (Vitest)
-npm run typecheck  # 型チェック (tsc -b)
-npm run lint       # oxlint
-npm run build      # 本番ビルド
+npm run dev        # http://localhost:5173
+npm run test
+npm run typecheck
+npm run lint
+npm run build
 ```
 
 ## ディレクトリ構成
 
-```
+```text
 src/
-├─ audio/        # サウンドエンジン（React 非依存の純粋 TS）
-│  ├─ instruments/  # 楽器ごとの発音
-│  ├─ scheduler.ts  # lookahead スケジューラ
-│  ├─ render.ts     # OfflineAudioContext レンダリング
-│  └─ wav.ts        # 16bit PCM WAV エンコーダ
-├─ model/        # Project 型・バリデーション・入出力（UI 非依存）
-├─ store/        # Zustand ストア・自動保存
-├─ features/     # transport / piano-roll / drum-grid / tracks / export
-└─ components/   # 共有 UI（PixelButton, PixelSlider, Playhead）
+├─ audio/        # 声明・梵鐘・法具の音響エンジン
+├─ model/        # プロジェクトデータと入出力
+├─ store/        # 状態管理と自動保存
+├─ features/     # 譜面、法具グリッド、再生、書き出し
+└─ components/   # 共通UI
 ```
-
-依存方向は UI → store → model / audio の一方向のみです。
