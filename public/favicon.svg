@@ -5,9 +5,9 @@
       <stop offset="1" stop-color="#151124"/>
     </radialGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#151124"/>
+  <rect width="64" height="64" fill="#151124"/>
   <circle cx="32" cy="32" r="24" fill="url(#halo)" stroke="#d8b45c" stroke-width="1.5"/>
   <circle cx="32" cy="32" r="19" fill="none" stroke="#d8b45c" stroke-opacity=".38"/>
   <path d="M32 12v40M12 32h40M18 18l28 28M46 18 18 46" stroke="#d8b45c" stroke-opacity=".18"/>
-  <text x="32" y="42" text-anchor="middle" font-family="serif" font-size="30" fill="#f2d98e">अ</text>
+  <text x="32" y="43" text-anchor="middle" font-family="Noto Sans Siddham, sans-serif" font-size="34" fill="#f2d98e">𑖮𑖿𑖨𑖱𑖾</text>
 </svg>
