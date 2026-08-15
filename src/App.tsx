@@ -68,6 +68,13 @@ function App() {
     });
   };
 
+  const clearScore = () => {
+    const hasNotes = useProjectStore.getState().project.tracks.some((track) => track.notes.length > 0);
+    if (!hasNotes) return;
+    if (!window.confirm('すべてのトラックの楽譜を削除しますか？\nこの操作は元に戻せません。')) return;
+    useProjectStore.getState().clearAllNotes();
+  };
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || isEditingText(event.target)) {
@@ -124,6 +131,14 @@ function App() {
           <div className="flex gap-2">
             <button type="button" onClick={loadChantPattern} className="preset-button border-2 border-ink bg-gold px-3 py-2 shadow-(--shadow-pixel)">
               般若の響き
+            </button>
+            <button
+              type="button"
+              onClick={clearScore}
+              disabled={!project.tracks.some((track) => track.notes.length > 0)}
+              className="border-2 border-ink bg-paper px-3 py-2 text-shade shadow-(--shadow-pixel) disabled:cursor-not-allowed disabled:opacity-35"
+            >
+              楽譜を削除
             </button>
             <ProjectFileButtons />
             <WavExportButton />

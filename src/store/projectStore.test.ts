@@ -59,4 +59,19 @@ describe('projectStore', () => {
     useProjectStore.getState().loadProject(project);
     expect(useProjectStore.getState().project).toEqual(project);
   });
+
+  it('clearAllNotes は全トラックのノートだけを削除する', () => {
+    const store = useProjectStore.getState();
+    store.setTitle('残す曲名');
+    store.setBpm(72);
+    store.addNote('piano', { step: 0, pitch: 60, length: 4, velocity: 0.8 });
+    store.addNote('drums', { step: 2, pitch: 0, length: 1, velocity: 0.8 });
+
+    useProjectStore.getState().clearAllNotes();
+
+    const project = useProjectStore.getState().project;
+    expect(project.tracks.every((track) => track.notes.length === 0)).toBe(true);
+    expect(project.title).toBe('残す曲名');
+    expect(project.bpm).toBe(72);
+  });
 });

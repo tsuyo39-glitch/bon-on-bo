@@ -21,6 +21,8 @@ interface ProjectStore {
   removeNote: (trackId: TrackId, step: number, pitch: number) => void;
   /** インデックス指定でノートを部分更新する（ピアノロールの移動・長さ変更用） */
   updateNoteAt: (trackId: TrackId, index: number, patch: Partial<Note>) => void;
+  /** 全トラックのノートだけを削除し、その他の設定は維持する */
+  clearAllNotes: () => void;
   /** JSON 読み込みなどでプロジェクト全体を置き換える */
   loadProject: (project: Project) => void;
 }
@@ -81,6 +83,14 @@ export const useProjectStore = create<ProjectStore>()((set) => ({
       project: updateTrack(s.project, trackId, (t) => ({
         notes: t.notes.map((n, i) => (i === index ? { ...n, ...patch } : n)),
       })),
+    })),
+
+  clearAllNotes: () =>
+    set((s) => ({
+      project: {
+        ...s.project,
+        tracks: s.project.tracks.map((track) => ({ ...track, notes: [] })),
+      },
     })),
 
   loadProject: (project) => set({ project }),
