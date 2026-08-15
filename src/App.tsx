@@ -134,16 +134,6 @@ function App() {
       <Transport onToggle={togglePlayback} />
 
       <main className="sacred-main space-y-5 p-4">
-        <section className="mandala-panel border-2 border-ink bg-tone px-4 py-3" aria-label="アプリの説明">
-          <div className="mandala-orbit" aria-hidden="true">
-            <span className="mandala-core">ॐ</span>
-          </div>
-          <div className="hero-copy">
-            <p className="hero-kicker">SACRED SOUND COMPOSER</p>
-            <h2>音を置き、祈りを編む</h2>
-            <p>声明・梵鐘・地鳴り・法具を重ね、八小節の聖なる響きを結びます</p>
-          </div>
-        </section>
         <section className="instrument-sanctuary">
           <p className="section-caption">四つの響き</p>
           <TrackTabs activeTrack={activeTrack} onSelect={setActiveTrack} />
